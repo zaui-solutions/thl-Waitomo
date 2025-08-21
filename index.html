@@ -26,34 +26,36 @@
 
         /*
         * The core of the 'techy' grid background.
-        * We are using a combination of two background images with different animations.
-        * This creates a more complex and fluid "techy grid" effect.
+        * We are using a combination of multiple background layers to create a dynamic, deep visual effect.
+        * The gradients and animation speeds are customized for a more "awesome" look.
         */
         .moving-grid {
             background-image:
-                radial-gradient(var(--primary-navy) 2px, transparent 2px),
-                radial-gradient(var(--accent-teal) 0.5px, transparent 0.5px);
-            background-size: 80px 80px, 40px 40px;
-            background-position: 0 0, 20px 20px;
-            animation: move-bg-lg 120s linear infinite, move-bg-sm 60s linear infinite reverse;
+                linear-gradient(to right, rgba(15, 23, 42, 0.8) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(15, 23, 42, 0.8) 1px, transparent 1px),
+                radial-gradient(circle at 50% 50%, rgba(20, 184, 166, 0.1) 1px, transparent 20px),
+                radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.1) 1px, transparent 30px);
+            background-size: 40px 40px, 40px 40px, 120px 120px, 180px 180px;
+            animation: move-bg 90s linear infinite, move-dots-1 60s linear infinite, move-dots-2 80s linear infinite reverse;
         }
 
-        @keyframes move-bg-lg {
+        @keyframes move-bg {
             from {
-                background-position: 0 0, 20px 20px;
+                background-position: 0 0, 0 0, 0 0, 0 0;
             }
             to {
-                background-position: 80px 80px, 60px 60px;
+                background-position: 40px 40px, 40px 40px, 120px 120px, 180px 180px;
             }
         }
+
+        @keyframes move-dots-1 {
+            from { background-position: 0 0; }
+            to { background-position: 120px 120px; }
+        }
         
-        @keyframes move-bg-sm {
-            from {
-                background-position: 0 0, 20px 20px;
-            }
-            to {
-                background-position: 40px 40px, 60px 60px;
-            }
+        @keyframes move-dots-2 {
+            from { background-position: 0 0; }
+            to { background-position: 180px 180px; }
         }
 
         /*
@@ -275,6 +277,19 @@
             cursor: pointer;
             transition: color 0.3s ease;
         }
+        .profile-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
     </style>
 </head>
 <body class="moving-grid">
@@ -302,7 +317,7 @@
             <nav class="mb-8">
                 <ul class="flex flex-col sm:flex-row justify-between lg:justify-center text-sm font-medium text-center space-y-2 sm:space-y-0 sm:space-x-2 lg:space-x-4">
                     <li class="w-full sm:w-auto">
-                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out" data-tab="rfp-response">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out active" data-tab="rfp-response">
                             RFP Response
                         </a>
                     </li>
@@ -322,7 +337,7 @@
                         </a>
                     </li>
                     <li class="w-full sm:w-auto">
-                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out active" data-tab="team">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out" data-tab="team">
                             Your Zaui Team
                         </a>
                     </li>
@@ -332,7 +347,7 @@
             <!-- Tab Content -->
             <div id="tab-content-container">
                 <!-- RFP Response Tab Content -->
-                <div id="rfp-response-content" class="tab-content">
+                <div id="rfp-response-content" class="tab-content active">
                     <div class="text-center mb-8">
                         <h2 class="text-3xl font-extrabold text-teal-400 mb-1">thl Waitomo RFP Response</h2>
                         <p class="text-xl text-gray-400">Vendor: Zaui Software Ltd.</p>
@@ -679,7 +694,7 @@
                 </div>
 
                 <!-- Team Tab Content -->
-                <div id="team-content" class="tab-content active">
+                <div id="team-content" class="tab-content">
                     <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-200">Your Zaui Team</h2>
                     <p class="text-gray-400 text-lg mb-8">
                         Our relationship with thl Waitomo goes beyond technology. Your Zaui team is a dedicated group of experts committed to a smooth and successful implementation. We provide personalized support throughout the onboarding process and are here to help you every step of the way, ensuring our platform aligns perfectly with your operations and long-term vision.
@@ -709,7 +724,7 @@
                             <div class="space-y-2 text-sm text-gray-300 profile-details">
                                 <p>423-119 West Pender Street, Vancouver, BC, Canada V6B 1S5</p>
                                 <p>sam.rostainajad@zaui.com</p>
-                                <p class="mb-2">www.zaui.com</p>
+                                <p>www.zaui.com</p>
                                 <a href="https://meetings.hubspot.com/samim-rostainajad?uuid=9be6e192-b755-47e9-ab85-c77beae063fe" target="_blank" class="quick-meet-link">Book a quick meet with Sam &rarr;</a>
                             </div>
                         </div>
@@ -931,8 +946,8 @@
                 });
             });
 
-            // Ensure the Team tab is active on page load
-            const initialTab = document.querySelector('.tab-button[data-tab="team"]');
+            // Ensure the RFP Response tab is active on page load
+            const initialTab = document.querySelector('.tab-button[data-tab="rfp-response"]');
             if (initialTab) {
                 switchTab(initialTab);
             }
