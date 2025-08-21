@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zaui's Content Hub Built for thl Waitomo</title>
+    <!-- Inter font for a modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS for rapid, responsive styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --primary-dark-blue: #0F172A; /* Slate 900 */
+            --primary-navy: #1E293B; /* Slate 800 */
+            --accent-teal: #14B8A6; /* Teal 500 */
+            --text-white: #F8FAFC; /* Slate 50 */
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--primary-dark-blue);
+            color: var(--text-white);
+            overflow-x: hidden; /* Prevents horizontal scroll from the background effect */
+        }
+
+        /*
+        * The core of the 'techy' grid background.
+        * We are using a combination of two background images with different animations.
+        * This creates a more complex and fluid "techy grid" effect.
+        */
+        .moving-grid {
+            background-image:
+                radial-gradient(var(--primary-navy) 2px, transparent 2px),
+                radial-gradient(var(--accent-teal) 0.5px, transparent 0.5px);
+            background-size: 80px 80px, 40px 40px;
+            background-position: 0 0, 20px 20px;
+            animation: move-bg-lg 120s linear infinite, move-bg-sm 60s linear infinite reverse;
+        }
+
+        @keyframes move-bg-lg {
+            from {
+                background-position: 0 0, 20px 20px;
+            }
+            to {
+                background-position: 80px 80px, 60px 60px;
+            }
+        }
+        
+        @keyframes move-bg-sm {
+            from {
+                background-position: 0 0, 20px 20px;
+            }
+            to {
+                background-position: 40px 40px, 60px 60px;
+            }
+        }
+
+        /*
+        * Styles for the active tab state.
+        * The accent color and a subtle glow make the active tab stand out.
+        */
+        .tab-button {
+            transition: all 0.3s ease-in-out;
+            border-radius: 0.5rem 0.5rem 0 0;
+            position: relative;
+        }
+
+        .tab-button.active {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-bottom: 2px solid var(--accent-teal);
+            color: var(--accent-teal);
+            font-weight: 600;
+        }
+
+        /* Custom glow effect on hover for buttons */
+        .glow-on-hover:hover {
+            box-shadow: 0 0 10px var(--accent-teal), 0 0 20px var(--accent-teal), 0 0 30px var(--accent-teal);
+            transition: box-shadow 0.3s ease-in-out;
+        }
+
+        /* Styling for the tab content area */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Gradient border effect for the main card */
+        .gradient-border {
+            position: relative;
+            z-index: 10;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 1rem;
+            padding: 2px; /* Controls the width of the border */
+            background: linear-gradient(45deg, #14B8A6, #3b82f6, #60a5fa, #14B8A6);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: -10;
+        }
+        
+        /* Card styling for team profiles */
+        .profile-card {
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            transition: transform 0.3s ease-in-out;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+        .profile-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-teal);
+            box-shadow: 0 10px 25px rgba(20, 184, 166, 0.2);
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at center, rgba(20, 184, 166, 0.1), transparent 70%);
+            animation: rotate-bg 15s linear infinite;
+        }
+
+        @keyframes rotate-bg {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* New avatar styles */
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-color: #3b82f6; /* Accent color for avatar background */
+            color: #fff;
+            font-size: 3rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid var(--accent-teal);
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            box-shadow: 0 5px 15px rgba(20, 184, 166, 0.3);
+        }
+
+        /* Styles for the "Quick Meet" buttons */
+        .quick-meet-link {
+            background-color: #3b82f6;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+        .quick-meet-link:hover {
+            background-color: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        }
+
+        /* Other section styles remain unchanged */
+        .rfp-card {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            transition: all 0.2s ease-in-out;
+        }
+        .rfp-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--accent-teal);
+        }
+
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+
+        .category-filter-btn {
+            transition: all 0.3s ease;
+            background-color: #334155;
+        }
+        .category-filter-btn.active {
+            background-color: var(--accent-teal);
+            color: #fff;
+        }
+
+        .impact-tile {
+            background-color: #1f2937;
+            border: 1px solid #3b82f6;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+        }
+        .impact-tile:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-teal);
+        }
+        .impact-tile .value {
+            color: #60a5fa;
+        }
+        .impact-category-title {
+            color: #60a5fa;
+            border-bottom: 2px solid var(--accent-teal);
+        }
+
+        .client-card, .content-card, .social-post-card {
+            background-color: #1f2937;
+            border: 1px solid #334155;
+            transition: all 0.3s ease;
+        }
+        .client-card:hover, .content-card:hover, .social-post-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-teal);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.show {
+            display: flex;
+        }
+        .modal-content {
+            background-color: #1a202c;
+            padding: 30px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid #007bff;
+        }
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+    </style>
+</head>
+<body class="moving-grid">
+
+    <!-- Header Section - Separate and Distinct -->
+    <header class="py-12 md:py-24 text-center">
+        <div class="relative max-w-7xl mx-auto px-4">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-2 text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
+                Zaui's Content Hub
+            </h1>
+            <p class="text-lg md:text-2xl text-gray-400 mb-6">
+                A sales proposal built for thl Waitomo.
+            </p>
+            <p class="max-w-3xl mx-auto text-base text-gray-300">
+                This partnership is designed to elevate the world-renowned Waitomo Caves visitor experience. Our all-in-one platform is engineered to streamline operations, optimize revenue, and enhance the guest journey from their first click to their final check-in, empowering you to focus on the magic of the caves.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Page Container -->
+    <div class="p-4 md:p-8 flex items-center justify-center -mt-16">
+        <!-- Content Card/Container with Gradient Border -->
+        <div class="gradient-border bg-gray-900 bg-opacity-70 backdrop-blur-sm p-6 md:p-10 rounded-xl shadow-2xl max-w-7xl w-full">
+            <!-- Tab Navigation -->
+            <nav class="mb-8">
+                <ul class="flex flex-col sm:flex-row justify-between lg:justify-center text-sm font-medium text-center space-y-2 sm:space-y-0 sm:space-x-2 lg:space-x-4">
+                    <li class="w-full sm:w-auto">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out" data-tab="rfp-response">
+                            RFP Response
+                        </a>
+                    </li>
+                    <li class="w-full sm:w-auto">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out" data-tab="architecture">
+                            Architecture
+                        </a>
+                    </li>
+                    <li class="w-full sm:w-auto">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out" data-tab="pricing">
+                            Pricing
+                        </a>
+                    </li>
+                    <li class="w-full sm:w-auto">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out" data-tab="references">
+                            Client References
+                        </a>
+                    </li>
+                    <li class="w-full sm:w-auto">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out active" data-tab="team">
+                            Your Zaui Team
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Tab Content -->
+            <div id="tab-content-container">
+                <!-- RFP Response Tab Content -->
+                <div id="rfp-response-content" class="tab-content">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-extrabold text-teal-400 mb-1">thl Waitomo RFP Response</h2>
+                        <p class="text-xl text-gray-400">Vendor: Zaui Software Ltd.</p>
+                    </div>
+
+                    <!-- Search and Filter Controls -->
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
+                        <input type="text" id="rfp-search" placeholder="Search requirements..." class="flex-1 p-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-500 transition-colors">
+                        <select id="rfp-filter" class="p-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-teal-500 transition-colors">
+                            <option value="all">All Responses</option>
+                            <option value="✅ Yes">✅ Yes</option>
+                            <option value="❌ Not native">❌ Not native</option>
+                            <option value="⚠️ Partial">⚠️ Partial</option>
+                            <option value="⚠️ Limited">⚠️ Limited</option>
+                            <option value="⚠️ In development">⚠️ In development</option>
+                        </select>
+                    </div>
+
+                    <!-- RFP Requirements List -->
+                    <div id="rfp-list" class="space-y-6">
+                        <!-- Content will be dynamically populated by JavaScript -->
+                    </div>
+
+                    <!-- Bottom Narrative Sections -->
+                    <div class="mt-12 space-y-8">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">Innovation & AI</h3>
+                            <p class="text-gray-300">
+                                Zaui is investing heavily in AI under Nera AI, our intelligent copilot. Nera enhances pricing logic, capacity optimization, guest communications, and operational insights. She acts as a strategic partner for operators, helping maximize revenue and streamline workflows.
+                            </p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-400 mt-4">
+                                <li><strong>Dynamic Pricing:</strong> Automated adjustments based on demand and capacity.</li>
+                                <li><strong>Guest Communication:</strong> Personalized, automated confirmations and reminders.</li>
+                                <li><strong>Operational Optimization:</strong> Capacity balancing and inventory allocation.</li>
+                                <li><strong>Data Insights:</strong> Surfacing trends and recommendations for decision-making.</li>
+                            </ul>
+                            <p class="text-gray-300 mt-4">Future roadmap includes expansion into fraud detection and advanced marketing automation.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">Company Stability & Support</h3>
+                            <p class="text-gray-300">
+                                Zaui has been in market for over 20 years, serving leading transportation, tour, and attraction operators worldwide. Headquartered in Vancouver, Canada, Zaui supports clients across North America, Europe, and Asia-Pacific.
+                                <br><br>
+                                We maintain a track record of 99.9% uptime, with incident reporting and full SLA commitments. While we do not have a physical office in New Zealand, we provide international support coverage and can share references from regional clients with similar scale and complexity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Architecture Tab Content -->
+                <div id="architecture-content" class="tab-content">
+                    <div class="container mx-auto max-w-7xl text-center">
+                        <h2 class="text-4xl md:text-5xl font-extrabold text-white mb-8">
+                            The Zaui Architecture: Built for Tours & Attractions
+                        </h2>
+                        <p class="text-lg md:text-xl text-gray-400 mb-12">
+                            Zaui provides a centralized, cloud-hosted platform that seamlessly connects every part of your operation, from online sales to on-site management. Our system is designed to handle the scale and complexity of a multi-product business like thl Waitomo.
+                        </p>
+                    </div>
+
+                    <!-- Content Categories - Clickable Filters -->
+                    <div class="flex flex-wrap justify-center gap-4 mb-8">
+                        <button class="category-filter-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300 active" data-category="all">All Content</button>
+                        <button class="category-filter-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300" data-category="quantifiable-impact">Quantifiable Impact</button>
+                        <button class="category-filter-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300" data-category="case-studies">Case Studies</button>
+                        <button class="category-filter-btn px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-300" data-category="webinars-and-ebooks">Resources</button>
+                    </div>
+
+                    <!-- Main Content Sections -->
+                    <main class="space-y-12">
+                        <!-- Quantifiable Impact Section -->
+                        <section id="quantifiable-impact" class="content-section active">
+                            <h3 class="text-2xl font-bold mb-4 text-gray-200">Quantifiable Impact: Zaui's Proven Results</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-12">
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="overall-experience">
+                                    <p class="value text-4xl font-extrabold">25 Years</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Experience (since 1999, 1000s of operators)</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="overall-growth">
+                                    <p class="value text-4xl font-extrabold">14%</p>
+                                    <p class="description text-gray-400 text-sm mt-2">YoY Growth for Average Customer</p>
+                                </div>
+                            </div>
+
+                            <h3 class="impact-category-title text-xl font-bold text-gray-200 mb-4 text-center">Drive More Revenue</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="revenue-275-lifetime">
+                                    <p class="value text-3xl font-extrabold">275%</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Business Growth Over Time (long-term users)</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="revenue-20-peak">
+                                    <p class="value text-3xl font-extrabold">20%</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Revenue Increase in Peak Season (Dynamic Pricing)</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="channels-30-agents">
+                                    <p class="value text-3xl font-extrabold">30%</p>
+                                    <p class="description text-gray-400 text-sm mt-2">More Bookings through Agents & Resellers</p>
+                                </div>
+                            </div>
+                            <h3 class="impact-category-title text-xl font-bold text-gray-200 mb-4 text-center">Expand Sales Through More Channels</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="channels-global-reach">
+                                    <p class="value text-3xl font-extrabold">Global Reach</p>
+                                    <p class="description text-gray-400 text-sm mt-2">with Viator, Expedia, Google & more</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="channels-no-overbookings">
+                                    <p class="value text-3xl font-extrabold">No More</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Overbookings (Real-time Inventory Sync)</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="channels-track-roi">
+                                    <p class="value text-3xl font-extrabold">Track ROI</p>
+                                    <p class="description text-gray-400 text-sm mt-2">on Partners with Precision</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="channels-multiple-brands">
+                                    <p class="value text-3xl font-extrabold">Multiple Brands</p>
+                                    <p class="description text-gray-400 text-sm mt-2">or Locations from One System</p>
+                                </div>
+                            </div>
+                            <h3 class="impact-category-title text-xl font-bold text-gray-200 mb-4 text-center">Streamline Operations & Save on Overhead</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="operations-75-workload">
+                                    <p class="value text-3xl font-extrabold">75%</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Reduction in Office Workload</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="operations-grow-without-staff">
+                                    <p class="value text-3xl font-extrabold">Grow Bookings</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Without Growing Staff</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="operations-speed-checkin">
+                                    <p class="value text-3xl font-extrabold">Speed Up</p>
+                                    <p class="description text-gray-400 text-sm mt-2">On-site Check-in</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="operations-consolidate-tools">
+                                    <p class="value text-3xl font-extrabold">Consolidate Tools</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Reduce Software Spend</p>
+                                </div>
+                            </div>
+                            <h3 class="impact-category-title text-xl font-bold text-gray-200 mb-4 text-center">Create a Seamless Experience for Guests</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="guest-50-online">
+                                    <p class="value text-3xl font-extrabold">Shift 50%</p>
+                                    <p class="description text-gray-400 text-sm mt-2">of Bookings Online</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="guest-10x-reviews">
+                                    <p class="value text-3xl font-extrabold">10x More</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Guest Reviews</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="guest-sell-24-7">
+                                    <p class="value text-3xl font-extrabold">Sell 24/7</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Even While You Sleep</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="guest-fewer-abandoned">
+                                    <p class="value text-3xl font-extrabold">Fewer Abandoned</p>
+                                    <p class="description text-gray-400 text-sm mt-2">Carts, More Confirmed Bookings</p>
+                                </div>
+                                <div class="impact-tile rounded-lg p-6 shadow-lg text-center cursor-pointer hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1" data-insight-id="guest-5-star-repeat">
+                                    <p class="value text-3xl font-extrabold">Earn More</p>
+                                    <p class="description text-gray-400 text-sm mt-2">5-Star Reviews & Repeat Business</p>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Case Studies Section -->
+                        <section id="case-studies" class="content-section">
+                            <h3 class="text-2xl font-bold mb-4 text-gray-200">Case Studies & Success Stories</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="content-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Achieving 275% Growth with Zaui</h4>
+                                    <p class="text-gray-400 text-sm mb-3">Discover how a leading tour operator scaled their business and revenue with Zaui's all-in-one platform.</p>
+                                    <a href="https://www.zaui.com/blog/how-to-grow-a-tourism-business-from-the-ground-up/" target="_blank" class="inline-block text-gray-300 hover:text-teal-400 font-medium text-sm mt-4">Read Case Study &rarr;</a>
+                                    <button class="generate-insights-btn mt-4 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm"
+                                            data-insight-id="case-study-1">
+                                        ✨ Get AI Insight for thl Waitomo
+                                    </button>
+                                </div>
+                                <div class="content-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Dynamic Pricing to Increase Revenue by 20%</h4>
+                                    <p class="text-gray-400 text-sm mb-3">See how a tour operator achieved a 20% revenue increase using dynamic pricing strategies powered by Zaui.</p>
+                                    <a href="https://www.zaui.com/blog/dynamic-pricing-strategies-for-tour-operators/" target="_blank" class="inline-block text-gray-300 hover:text-teal-400 font-medium text-sm mt-4">Read Case Study &rarr;</a>
+                                    <button class="generate-insights-btn mt-4 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm"
+                                            data-insight-id="case-study-2">
+                                        ✨ Get AI Insight for thl Waitomo
+                                    </button>
+                                </div>
+                                <div class="content-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Fairview Limousine: Dynamic Pricing Success</h4>
+                                    <p class="text-gray-400 text-sm mb-3">A Rocky Mountain tour and shuttle company used Zaui's dynamic pricing to increase revenue by 20%.</p>
+                                    <a href="https://www.zaui.com/blog/case-study-dynamic-pricing-success-with-fairview-limo/" target="_blank" class="inline-block text-gray-300 hover:text-teal-400 font-medium text-sm mt-4">Read Case Study &rarr;</a>
+                                    <button class="generate-insights-btn mt-4 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm"
+                                            data-insight-id="case-study-3">
+                                        ✨ Get AI Insight for thl Waitomo
+                                    </button>
+                                </div>
+                                <div class="content-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">IceWalks Tours: Diversified Sales Channels</h4>
+                                    <p class="text-gray-400 text-sm mb-3">Learn how IceWalks diversified their sales channels and streamlined bookings with Zaui software.</p>
+                                    <a href="https://www.zaui.com/blog/zaui-reservation-software-customer-story-icewalks/" target="_blank" class="inline-block text-gray-300 hover:text-teal-400 font-medium text-sm mt-4">Read Case Study &rarr;</a>
+                                    <button class="generate-insights-btn mt-4 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm"
+                                            data-insight-id="case-study-4">
+                                        ✨ Get AI Insight for thl Waitomo
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Resources Section -->
+                        <section id="webinars-and-ebooks" class="content-section">
+                            <h3 class="text-2xl font-bold mb-4 text-gray-200">Resources: Webinars & E-books</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="content-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">The Ultimate Dynamic Pricing Guide</h4>
+                                    <p class="text-gray-400 text-sm mb-3">A comprehensive guide to implementing dynamic pricing strategies for attractions like the Waitomo Caves to optimize revenue.</p>
+                                    <a href="https://9407876.fs1.hubspotusercontent-na1.net/hubfs/9407876/Ebooks/Dynamic%20Pricing%20Guidebook%20Zaui%20Software.pdf" target="_blank" class="inline-block text-gray-300 hover:text-teal-400 font-medium text-sm mt-4">Download E-book &rarr;</a>
+                                    <button class="generate-insights-btn mt-4 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm"
+                                            data-insight-id="dynamic-pricing-guide">
+                                        ✨ Get AI Insight
+                                    </button>
+                                </div>
+                                <div class="content-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Webinar: Get Your Zaui System Ready for Peak Season</h4>
+                                    <p class="text-gray-400 text-sm mb-3">Best practices for optimizing your booking system to handle high-volume demands during peak seasons with confidence.</p>
+                                    <a href="https://offer.zaui.com/webinar-optimizing-your-booking-system-ready-for-peak-season" target="_blank" class="inline-block text-gray-300 hover:text-teal-400 font-medium text-sm mt-4">Watch Now &rarr;</a>
+                                    <button class="generate-insights-btn mt-4 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm"
+                                            data-insight-id="peak-season">
+                                        ✨ Get AI Insight
+                                    </button>
+                                </div>
+                                <div class="content-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Webinar: Mastering Travel Distribution Channels</h4>
+                                    <p class="text-gray-400 text-sm mb-3">Strategies for effectively utilizing various travel distribution channels to maximize your reach and bookings.</p>
+                                    <a href="https://www.zaui.com/blog/travel-distribution-channels/" target="_blank" class="inline-block text-gray-300 hover:text-teal-400 font-medium text-sm mt-4">Read More &rarr;</a>
+                                    <button class="generate-insights-btn mt-4 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm"
+                                            data-insight-id="distribution-channels">
+                                        ✨ Get AI Insight
+                                    </button>
+                                </div>
+                                <div class="content-card rounded-lg p-6 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Webinar: What to Look for in a Travel Booking Software</h4>
+                                    <p class="text-gray-400 text-sm mb-3">Key considerations and features to prioritize when choosing a travel booking software in the coming year.</p>
+                                    <a href="https://www.zaui.com/blog/what-to-look-for-in-a-travel-booking-software-in-2025/" target="_blank" class="inline-block text-gray-300 hover:text-teal-400 font-medium text-sm mt-4">Read More &rarr;</a>
+                                    <button class="generate-insights-btn mt-4 w-full bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm"
+                                            data-insight-id="booking-software-features">
+                                        ✨ Get AI Insight
+                                    </button>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Partnership Benefit Generator Section -->
+                        <section id="partnership-benefits" class="content-section">
+                            <h3 class="text-2xl font-bold mb-4 text-gray-200">AI Insight for thl Waitomo</h3>
+                            <div class="bg-gray-800 rounded-lg p-6 shadow-lg text-center">
+                                <p class="text-gray-400 text-lg mb-4">
+                                    Click the button below to see how Zaui's platform can benefit a major tour operator like thl Waitomo.
+                                </p>
+                                <button id="generateBenefitBtn" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center mx-auto" data-insight-id="static-insight-1">
+                                    💡 Generate AI Insight
+                                </button>
+                            </div>
+                        </section>
+                    </main>
+                </div>
+
+                <!-- Client References Tab Content -->
+                <div id="references-content" class="tab-content">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-extrabold text-teal-400 mb-1">Relevant Client References</h2>
+                        <p class="text-xl text-gray-400">Partners who trust Zaui to power their experiences.</p>
+                    </div>
+                    
+                    <div class="space-y-12">
+                        <!-- New Zealand References -->
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-200 mb-6 border-b border-gray-700 pb-2">New Zealand-Based Operators</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Ziptrek Ecotours (Queenstown)</h4>
+                                    <p class="text-gray-400 text-sm mb-3">New Zealand's original zipline tour, offering a mix of adventure and eco-education for families and thrill-seekers.</p>
+                                    <a href="https://www.ziptrek.co.nz/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Stray Travel (Hop-on, Hop-off Bus)</h4>
+                                    <p class="text-gray-400 text-sm mb-3">A guided hop-on-hop-off travel network that takes visitors to both popular and off-the-beaten-path locations in NZ.</p>
+                                    <a href="https://www.straytravel.com/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Explorer Bus (Auckland)</h4>
+                                    <p class="text-gray-400 text-sm mb-3">A popular hop-on hop-off sightseeing tour, allowing guests to explore Auckland's top attractions at their own pace.</p>
+                                    <a href="https://www.explorerbus.co.nz/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">East West Coaches</h4>
+                                    <p class="text-gray-400 text-sm mb-3">A shuttle and coach service providing scenic tours and transfers across New Zealand's West Coast.</p>
+                                    <a href="https://www.eastwestcoaches.co.nz/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Luxury Airport Shuttles</h4>
+                                    <p class="text-gray-400 text-sm mb-3">Offers airport transfers and private charters, including tours, across the Bay of Plenty and Waikato regions.</p>
+                                    <a href="https://www.luxuryairportshuttles.co.nz/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- International References -->
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-200 mb-6 border-b border-gray-700 pb-2">International Operators with Similar Experiences</h3>
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">White Water Rafting (Jasper)</h4>
+                                    <p class="text-gray-400 text-sm mb-3">A family-owned business running multiple tour options on two different rivers in Jasper National Park.</p>
+                                    <a href="https://whitewaterraftingjasper.com/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Banff Adventures (Banff, Canada)</h4>
+                                    <p class="text-gray-400 text-sm mb-3">An adventure center specializing in booking a wide range of activities and tours in the Canadian Rockies.</p>
+                                    <a href="https://www.banffadventures.com/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Santa Barbara Adventure Company</h4>
+                                    <p class="text-gray-400 text-sm mb-3">A tour company offering multiple experiences, from kayaking and surfing to guided hiking and rock climbing.</p>
+                                    <a href="https://www.sbadventureco.com/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">Tromso Arctic Reindeer (Norway)</h4>
+                                    <p class="text-gray-400 text-sm mb-3">A cultural experience operator offering reindeer sledding, Northern Lights tours, and Sami culture experiences.</p>
+                                    <a href="https://www.tromsoarcticreindeer.com/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                                <div class="content-card rounded-lg p-6">
+                                    <h4 class="text-xl font-semibold mb-2 text-teal-400">A Day in LA Tours (Los Angeles)</h4>
+                                    <p class="text-gray-400 text-sm mb-3">A guided tour company offering scenic and historic bus tours to major landmarks in Los Angeles.</p>
+                                    <a href="https://www.adayinlatours.com/" target="_blank" class="prominent-link mt-4">Visit Website &rarr;</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing Tab Content -->
+                <div id="pricing-content" class="tab-content">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-200">Pricing Summary</h2>
+                    <p class="text-gray-400 text-lg">
+                        [Placeholder] This section will detail a flexible and scalable pricing model tailored to your business. Our goal is to demonstrate a clear return on investment (ROI) by boosting direct bookings, reducing operational costs, and increasing revenue through efficient upsells and cross-sells. Let's discuss a plan that works for you.
+                    </p>
+                </div>
+
+                <!-- Team Tab Content -->
+                <div id="team-content" class="tab-content active">
+                    <h2 class="text-2xl md:text-3xl font-bold mb-6 text-gray-200">Your Zaui Team</h2>
+                    <p class="text-gray-400 text-lg mb-8">
+                        Our relationship with thl Waitomo goes beyond technology. Your Zaui team is a dedicated group of experts committed to a smooth and successful implementation. We provide personalized support throughout the onboarding process and are here to help you every step of the way, ensuring our platform aligns perfectly with your operations and long-term vision.
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <!-- Profile Card for Jamie -->
+                        <div class="profile-card p-6 rounded-lg text-center">
+                            <div class="profile-info">
+                                <div class="profile-avatar mx-auto mb-4">JR</div>
+                                <h3 class="text-2xl font-bold text-teal-400 mb-1">Jamie Roxburgh</h3>
+                                <p class="text-lg text-gray-400 mb-4">Senior Account Executive</p>
+                            </div>
+                            <div class="space-y-2 text-sm text-gray-300 profile-details">
+                                <p>423-119 West Pender Street, Vancouver, BC, Canada V6B 1S5</p>
+                                <p>604 566 9284</p>
+                                <p>Jamie.roxburgh@Zaui.com</p>
+                                <a href="https://meetings.hubspot.com/jamie-roxburgh?uuid=0f74e47b-909a-4e1e-8a05-1f5f9ec111fd" target="_blank" class="quick-meet-link">Book a quick meet with Jamie &rarr;</a>
+                            </div>
+                        </div>
+                        <!-- Profile Card for Sam -->
+                        <div class="profile-card p-6 rounded-lg text-center">
+                            <div class="profile-info">
+                                <div class="profile-avatar mx-auto mb-4">SR</div>
+                                <h3 class="text-2xl font-bold text-teal-400 mb-1">Sam Rostainajad</h3>
+                                <p class="text-lg text-gray-400 mb-4">Head of Sales</p>
+                            </div>
+                            <div class="space-y-2 text-sm text-gray-300 profile-details">
+                                <p>423-119 West Pender Street, Vancouver, BC, Canada V6B 1S5</p>
+                                <p>sam.rostainajad@zaui.com</p>
+                                <p class="mb-2">www.zaui.com</p>
+                                <a href="https://meetings.hubspot.com/samim-rostainajad?uuid=9be6e192-b755-47e9-ab85-c77beae063fe" target="_blank" class="quick-meet-link">Book a quick meet with Sam &rarr;</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Call to Action Footer -->
+            <footer class="mt-8 text-center">
+                <a href="#" class="glow-on-hover inline-block px-8 py-3 text-lg font-semibold text-white bg-teal-500 rounded-full transition duration-300 ease-in-out hover:bg-teal-600">
+                    Book a Live Demo
+                </a>
+            </footer>
+
+        </div>
+    </div>
+
+    <!-- Modal for AI Insights and Summaries -->
+    <div id="insightsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="hideInsightModal()">&times;</span>
+            <h3 id="modalTitle" class="text-2xl font-bold mb-4 text-teal-400"></h3>
+            <div id="modalText" class="text-gray-300 leading-relaxed">
+                <div id="modalLoadingSpinner" class="loading-spinner mx-auto mt-4 hidden"></div>
+            </div>
+            <button id="copyInsightsBtn" class="mt-6 bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300 text-sm hidden">
+                Copy to Clipboard
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const rfpListContainer = document.getElementById('rfp-list');
+            const rfpSearchInput = document.getElementById('rfp-search');
+            const rfpFilterSelect = document.getElementById('rfp-filter');
+            const insightsModal = document.getElementById('insightsModal');
+            const modalTitle = insightsModal.querySelector('#modalTitle');
+            const modalText = insightsModal.querySelector('#modalText');
+            const copyInsightsBtn = document.getElementById('copyInsightsBtn');
+            
+            const staticInsights = {
+                'overall-experience': {
+                    title: 'Insight: 25 Years Experience',
+                    text: 'Zaui’s 25 years in the industry means we bring a proven, stable platform to a high-volume operation like thl Waitomo. Our extensive experience has led to a highly refined system designed to handle the specific complexities of tours and attractions, ensuring a reliable partnership without the risks of new technology.'
+                },
+                'overall-growth': {
+                    title: 'Insight: 14% YoY Growth for Average Customer',
+                    text: 'Our average client’s 14% year-over-year growth demonstrates Zaui is not just a booking tool, but a growth engine. By leveraging our features, such as dynamic pricing and expanded distribution, thl Waitomo can expect to see a consistent increase in revenue and booking volume, year after year.'
+                },
+                'revenue-275-lifetime': {
+                    title: 'Insight: 275% Business Growth Over Time',
+                    text: 'Long-term partners on the Zaui platform have achieved up to 275% business growth. This shows that Zaui is a scalable, long-term solution that grows with you. As thl Waitomo expands its offerings, Zaui’s architecture can support that growth without the need for additional complex systems.'
+                },
+                'revenue-20-peak': {
+                    title: 'Insight: 20% Revenue Increase in Peak Season',
+                    text: 'Our dynamic pricing engine allows you to maximize revenue during high-demand periods like school holidays and summer weekends. By automatically adjusting prices based on demand and capacity, Zaui helps thl Waitomo capture maximum value for each ticket sold, leading to a significant increase in peak season revenue.'
+                },
+                'channels-30-agents': {
+                    title: 'Insight: 30% More Bookings through Agents',
+                    text: 'Zaui’s B2B Agent Portal provides a powerful, self-service tool for your reseller partners. This streamlines the booking process for tour agents and local hotel concierges, eliminating manual phone calls and emails. The result is a significant increase in indirect bookings and expanded sales without adding administrative burden.'
+                },
+                'channels-global-reach': {
+                    title: 'Insight: Global Reach',
+                    text: 'By integrating with global OTAs like Viator and Google Things to Do, Zaui can place your Waitomo tours in front of millions of international travelers. This expanded visibility boosts bookings from key markets, allowing you to reach a wider audience without sacrificing control or paying high commissions on every sale.'
+                },
+                'channels-no-overbookings': {
+                    title: 'Insight: No More Overbookings',
+                    text: 'Zaui’s real-time inventory synchronization is critical for a high-volume operation like the Waitomo Caves. Our platform ensures that every booking, whether from your website, an agent, or a third-party OTA, instantly updates your live availability. This eliminates the risk of overbooking, safeguarding your reputation and ensuring a smooth experience for every visitor.'
+                },
+                'channels-track-roi': {
+                    title: 'Insight: Track ROI',
+                    text: 'Our granular reporting and unique affiliate links provide complete visibility into your partner performance. With Zaui, you can accurately track which agents and distribution channels are driving the most revenue and customer traffic. This data-driven approach allows thl Waitomo to optimize its reseller relationships and marketing spend for maximum return.'
+                },
+                'channels-multiple-brands': {
+                    title: 'Insight: Multiple Brands',
+                    text: 'Zaui’s architecture supports multiple brands and locations from a single back office. For thl Waitomo, this means you can manage all three of your cave experiences—Glowworm, Ruakuri, and Aranui—as well as any other tours you offer, from one unified system. This simplifies reporting, resource management, and customer data, providing a holistic view of your entire business.'
+                },
+                'operations-75-workload': {
+                    title: 'Insight: 75% Reduction in Office Workload',
+                    text: 'Our platform automates 75% of administrative tasks, from sending booking confirmations and waivers to generating daily manifests. This frees up your staff from tedious paperwork and phone calls, allowing them to focus on what they do best: providing world-class service and sharing the stories of the Waitomo Caves with your visitors.'
+                },
+                'operations-grow-without-staff': {
+                    title: 'Insight: Grow Bookings Without Growing Staff',
+                    text: 'Zaui’s automation and scalability enable you to grow your booking volume without needing to grow your staff at the same rate. The system handles the heavy lifting of reservations, payments, and communications, allowing your team to remain lean and efficient, even as visitor numbers increase.'
+                },
+                'operations-speed-checkin': {
+                    title: 'Insight: Speed Up On-site Check-in',
+                    text: 'Zaui’s mobile app and QR code scanning technology significantly speed up the on-site check-in process. This reduces queues at the visitor center, improves guest flow, and creates a seamless, modern experience from the moment they arrive. Your team can quickly validate tickets and get guests on their way to their tour.'
+                },
+                'operations-consolidate-tools': {
+                    title: 'Insight: Consolidate Tools',
+                    text: 'By consolidating your booking engine, CRM, and distribution tools into one platform, Zaui helps you reduce software costs and complexity. This eliminates the need to manage multiple disparate systems, providing a single source of truth for all your data and a more streamlined, reliable operation.'
+                },
+                'guest-50-online': {
+                    title: 'Insight: Shift 50% of Bookings Online',
+                    text: 'Zaui’s modern, user-friendly booking engine encourages guests to book directly on your website, shifting up to 50% of bookings online. This not only increases your profit margins by avoiding third-party commissions but also gives you full control over the customer relationship and data from the very beginning.'
+                },
+                'guest-10x-reviews': {
+                    title: 'Insight: 10x More Guest Reviews',
+                    text: 'Positive reviews are a powerful marketing tool. Zaui’s automated email workflows can prompt guests to leave a review after their tour, helping you generate up to 10x more feedback. This builds a strong online reputation and provides valuable social proof that attracts new visitors to the Waitomo Caves.'
+                },
+                'guest-sell-24-7': {
+                    title: 'Insight: Sell 24/7',
+                    text: 'Zaui\'s online booking engine never sleeps. It allows potential visitors to book their tours 24/7, from anywhere in the world. This is especially beneficial for international travelers in different time zones, ensuring you never miss a booking opportunity, even when your team is off duty.'
+                },
+                'guest-fewer-abandoned': {
+                    title: 'Insight: Fewer Abandoned Carts',
+                    text: 'A complex checkout process leads to lost sales. Zaui’s streamlined, mobile-friendly booking flow is designed for speed and simplicity, resulting in fewer abandoned carts and a higher conversion rate. This directly impacts your revenue by turning more website visitors into paying customers.'
+                },
+                'guest-5-star-repeat': {
+                    title: 'Insight: Earn More 5-Star Reviews & Repeat Business',
+                    text: 'A seamless, positive booking and check-in experience is the first step to a great tour. By providing a professional, easy-to-use platform, Zaui helps you earn more 5-star reviews and build customer loyalty. Happy guests are more likely to return and recommend the Waitomo Caves to others, generating valuable word-of-mouth marketing.'
+                },
+                'case-study-1': {
+                    title: 'AI Insight for thl Waitomo: Scaling Tour Operations',
+                    text: 'This case study demonstrates Zaui’s ability to help tour operators scale their business. For thl Waitomo, this means our platform can efficiently manage the high-volume traffic of all your caves (Glowworm, Ruakuri, Aranui) and a wider variety of tours. The system centralizes all operations, ensuring you can grow your bookings without overwhelming your staff.'
+                },
+                'case-study-2': {
+                    title: 'AI Insight for thl Waitomo: Dynamic Pricing for Tours',
+                    text: 'This insight highlights the power of Zaui’s dynamic pricing. For thl Waitomo, this can translate to increased revenue by adjusting ticket prices for all tour types based on time of day, day of the week, and seasonal demand. This ensures you’re always getting the best price for your unique and in-demand experiences.'
+                },
+                'case-study-3': {
+                    title: 'AI Insight for thl Waitomo: Fairview Limousine Case Study',
+                    text: 'Fairview Limousine’s success with Zaui’s dynamic pricing shows that our tools are effective across the tour and activity sector. For thl Waitomo, this proves our platform can drive significant revenue increases for your specific tours by optimizing pricing in real-time, helping you get the most out of every booking slot.'
+                },
+                'case-study-4': {
+                    title: 'AI Insight for thl Waitomo: IceWalks Diversified Sales Channels',
+                    text: 'This case study demonstrates how Zaui helps operators expand their reach. For thl Waitomo, this means our robust distribution APIs and agent portals can put your tours in front of a global audience through partners like Viator, GetYourGuide, and other local resellers, all while managing your inventory in real-time to prevent overbooking.'
+                },
+                'dynamic-pricing-guide': {
+                    title: 'AI Insight: The Ultimate Dynamic Pricing Guide',
+                    text: 'This e-book is a must-read for maximizing revenue. For thl Waitomo, implementing dynamic pricing powered by Zaui means your ticket prices can automatically adjust based on demand, seasonality, and time of day. This ensures you capture the highest possible revenue during peak periods and fill capacity during off-peak times, directly impacting your bottom line.'
+                },
+                'peak-season': {
+                    title: 'AI Insight: Preparing for Peak Season',
+                    text: 'This webinar content provides practical advice on preparing for high-volume seasons. It reinforces that with Zaui, thl Waitomo has a platform built for performance, with features to handle a surge in demand, manage inventory effectively, and ensure a smooth check-in process for thousands of visitors.'
+                },
+                'distribution-channels': {
+                    title: 'AI Insight: Mastering Distribution Channels',
+                    text: 'This guide is crucial for thl Waitomo. It emphasizes the need to diversify your sales. By using Zaui\'s channel manager, you can effortlessly manage your inventory across your direct website, partner agents, and major Online Travel Agencies (OTAs) like Expedia and Viator, all from a single back office. This strategy ensures maximum global reach and revenue potential for all of your unique tours.'
+                },
+                'booking-software-features': {
+                    title: 'AI Insight: Choosing Your Booking Software',
+                    text: 'This resource acts as a checklist for your decision-making. For thl Waitomo, it reinforces that Zaui is a complete, feature-rich solution that addresses all critical aspects of a modern tour operation, including real-time inventory, dynamic pricing, and mobile check-in capabilities, making it the ideal choice.'
+                },
+                'service-disruptions': {
+                    title: 'AI Insight: Managing Service Disruptions',
+                    text: 'Although this blog post is transportation-focused, its principles on communication and operational management are highly relevant for thl Waitomo. Zaui provides the tools to proactively communicate with guests about any tour changes, ensuring a smooth and stress-free experience, even in unforeseen circumstances. This protects your brand reputation and keeps your team in control.'
+                },
+                'resource-management': {
+                    title: 'AI Insight: Revolutionize Your Resource Management',
+                    text: 'This article highlights a core Zaui strength that directly benefits thl Waitomo. Our resource management tools allow you to centrally manage all your key assets—guides, boat captains, and equipment—across all your different tours. This eliminates the risk of over-committing resources and ensures your operations run with maximum efficiency and precision.'
+                },
+                'start-tour-business': {
+                    title: 'AI Insight: How to Start a Tour Business',
+                    text: 'This guide provides foundational advice on starting a tourism business. For thl Waitomo, this resource is a useful refresher on best practices. It emphasizes the importance of a robust, scalable booking system from day one, reinforcing that Zaui is the long-term technology partner you need to continue to grow and thrive.'
+                },
+                'travel-review-sites': {
+                    title: 'AI Insight: Top 7 Travel Review Sites',
+                    text: 'Online reputation is vital. This blog post highlights key platforms where customers leave feedback. Zaui provides automated communication tools to send post-tour review requests, helping thl Waitomo boost its number of 5-star reviews and build a strong online reputation that attracts more visitors.'
+                },
+                'selling-through-agents': {
+                    title: 'AI Insight: Selling Through Agents on Zaui',
+                    text: 'This article details the benefits of our agent portal. For thl Waitomo, this means you can empower a network of local and international partners to sell your tours, all while maintaining full control over pricing and availability in a single, easy-to-use platform. This expands your reach and drives more sales efficiently.'
+                },
+                'web-checkout': {
+                    title: 'AI Insight: Turn Clicks into Bookings',
+                    text: 'A seamless booking experience is crucial for conversions. This resource shows how Zaui\'s modern web checkout is designed to be fast, intuitive, and mobile-friendly. For thl Waitomo, this means fewer abandoned carts and more confirmed bookings from your website, directly boosting your revenue.'
+                }
+            };
+            
+            function showInsightModal(title, text) {
+                modalTitle.textContent = title;
+                modalText.innerHTML = text;
+                copyInsightsBtn.onclick = () => copyToClipboard(text);
+                copyInsightsBtn.classList.remove('hidden');
+                insightsModal.classList.add('show');
+            }
+
+            function hideInsightModal() {
+                insightsModal.classList.remove('show');
+            }
+
+            // Function to handle tab switching
+            function switchTab(targetTab) {
+                tabButtons.forEach(button => button.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                targetTab.classList.add('active');
+                const targetContentId = targetTab.getAttribute('data-tab') + '-content';
+                const targetContent = document.getElementById(targetContentId);
+                if (targetContent) {
+                    targetContent.classList.add('active');
+                }
+            }
+            
+            // Function to copy text to clipboard
+            function copyToClipboard(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    alert('Insight copied to clipboard!');
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                document.body.removeChild(textarea);
+            }
+
+            // Add click event listeners to all tab buttons
+            tabButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    switchTab(event.currentTarget);
+                });
+            });
+
+            // Ensure the Team tab is active on page load
+            const initialTab = document.querySelector('.tab-button[data-tab="team"]');
+            if (initialTab) {
+                switchTab(initialTab);
+            }
+
+            // RFP Data Structure for the RFP tab
+            const rfpData = [
+                { category: 'Alternate Availability', requirement: 'Suggest alternative products/times when sold out', response: '✅ Yes', notes: 'Calendar view shows live daily availability' },
+                { category: 'Alternate Availability', requirement: 'Automatically offer alternatives', response: '✅ Yes', notes: '(Alternatives surfaced to recover revenue)' },
+                { category: 'Availability Management', requirement: 'Seasonal and large-scale availability mgmt (e.g. channels)', response: '✅ Yes', notes: 'Throttling and channel-level controls supported' },
+                { category: 'B2B Portal', requirement: 'Portal access for credit and prepay agents', response: '✅ Yes', notes: 'Logins with net rate or wholesale options' },
+                { category: 'B2B Portal', requirement: 'Agents can create, amend, cancel bookings', response: '✅ Yes', notes: 'Full self-service' },
+                { category: 'B2B Portal', requirement: 'Export bookings (CSV)', response: '✅ Yes', notes: 'All reports exportable (CSV/Excel)' },
+                { category: 'B2B Portal', requirement: 'Group bookings via portal', response: '✅ Yes', notes: 'Supported' },
+                { category: 'B2B Portal', requirement: 'Accept Alipay, WeChat, QR, A2A', response: '⚠️ Partial', notes: 'Payment links and Windcave gateway integrations' },
+                { category: 'B2B Portal', requirement: 'Customizable comms tools for agents', response: '⚠️ Limited', notes: 'Transactional messages configurable' },
+                { category: 'B2B Portal', requirement: 'Clean, user-friendly interface', response: '✅ Yes', notes: 'Demonstrated in portal demo' },
+                { category: 'Comprehensive History Log', requirement: 'Logs of all booking/session changes', response: '✅ Yes', notes: 'Times, dates, and capacities tracked' },
+                { category: 'Comprehensive History Log', requirement: 'Tracks setup, rates, booking modifications', response: '✅ Yes', notes: 'Full audit trails' },
+                { category: 'Comprehensive History Log', requirement: 'Search & filter for troubleshooting', response: '✅ Yes', notes: 'Advanced back-office search tools' },
+                { category: 'CRM + Automation', requirement: 'Automate pre-/post-visit emails & SMS', response: '✅ Yes', notes: 'Includes reminders, upsells, feedback requests' },
+                { category: 'CRM + Automation', requirement: 'Immediate booking confirmations', response: '✅ Yes', notes: 'Sent instantly' },
+                { category: 'CRM + Automation', requirement: 'Customize transactional messages', response: '✅ Yes', notes: 'Cancellation fees, confirmations, etc. configurable' },
+                { category: 'Customer Portal', requirement: 'Customers can create/edit itineraries', response: '✅ Yes', notes: 'Self-service available' },
+                { category: 'Customer Portal', requirement: 'Bundle options shown by rules', response: '✅ Yes', notes: 'Configurable by business logic' },
+                { category: 'Data Collection', requirement: 'Collect customer emails with consent', response: '✅ Yes', notes: 'Opt-in field available' },
+                { category: 'Data Collection', requirement: 'Support compliant marketing opt-ins', response: '✅ Yes', notes: 'GDPR-style compliance supported' },
+                { category: 'E-Tickets / Kiosk', requirement: 'Auto-issue e-tickets (incl. groups)', response: '✅ Yes', notes: 'Native support' },
+                { category: 'E-Tickets / Kiosk', requirement: 'Mobile/online self-check-in via QR', response: '✅ Yes', notes: 'Mobile app scanning' },
+                { category: 'E-Tickets / Kiosk', requirement: 'Live check-in visibility', response: '✅ Yes', notes: 'Passenger counts tracked' },
+                { category: 'E-Tickets / Kiosk', requirement: 'Hardware support (scanners, kiosks, TVMs)', response: '⚠️ Partial', notes: 'Mobile app supported; kiosk hardware requires integration' },
+                { category: 'Fraud Detection', requirement: 'AI-powered fraud detection', response: '❌ Not native', notes: 'Planned for future roadmap' },
+                { category: 'Fraud Detection', requirement: 'Prevent payment fraud & chargebacks', response: '✅ Yes', notes: 'PCI gateways + 3DS protections' },
+                { category: 'Native SaaS Infrastructure', requirement: 'Fully cloud-hosted SaaS', response: '✅ Yes', notes: 'No local infrastructure' },
+                { category: 'Native SaaS Infrastructure', requirement: 'Auto-scale during peak usage', response: '✅ Yes', notes: 'Hosted on AWS with scaling' },
+                { category: 'Integrations', requirement: 'Risk/medical disclosure + Dayforce', response: '⚠️ Partial', notes: 'Possible via API' },
+                { category: 'Integrations', requirement: 'Health/safety acknowledgements at checkout', response: '✅ Yes', notes: 'Configurable fields + waivers' },
+                { category: 'Integrations', requirement: 'Photo platforms (e.g. PicThrive)', response: '✅ Yes', notes: 'Marketplace integration' },
+                { category: 'Integrations', requirement: 'Accommodation systems', response: '⚠️ Partial', notes: 'Open to integration' },
+                { category: 'Integrations', requirement: 'REST APIs for OTAs/payment gateways', response: '✅ Yes', notes: 'Windcave + distribution APIs' },
+                { category: 'Integrations', requirement: 'Native Dynamics 365', response: '❌ Not native', notes: 'Supported via API' },
+                { category: 'Integrations', requirement: 'Native Databricks/Power BI', response: '❌ Not native', notes: 'Reporting export only' },
+                { category: 'Multilingual Communication', requirement: 'Multi-language confirmations/guest comms', response: '✅ Yes', notes: 'Supported' },
+                { category: 'Booking Management', requirement: 'Inventory/channel capping', response: '✅ Yes', notes: 'Prevents overbooking' },
+                { category: 'Booking Management', requirement: 'Channel optimization tools', response: '✅ Yes', notes: 'Advanced rules available' },
+                { category: 'Booking Management', requirement: 'Intuitive UX for booking edits', response: '✅ Yes', notes: 'Prevents errors' },
+                { category: 'Booking Management', requirement: 'Auto task reminders (e.g. medical forms)', response: '✅ Yes', notes: 'Configurable' },
+                { category: 'Booking Management', requirement: 'Edit/upsell without cancellations', response: '✅ Yes', notes: 'Supported' },
+                { category: 'Booking Management', requirement: 'Custom dashboards (availability/manifests)', response: '⚠️ Partial', notes: '(Dashboards supported; drag-and-drop limited)' },
+                { category: 'Booking Management', requirement: 'Quick booking search (by guest)', response: '✅ Yes', notes: 'Fast back-office search' },
+                { category: 'Booking Management', requirement: 'Auto waitlist notifications', response: '⚠️ Partial', notes: 'Manual today' },
+                { category: 'Booking Management', requirement: 'Web product config across channels', response: '✅ Yes', notes: 'Fully supported' },
+                { category: 'Notification Workflows', requirement: 'Alerts for changes, cancellations, incomplete forms', response: '✅ Yes', notes: 'In-app notifications' },
+                { category: 'Offline Handling', requirement: 'Offline access/updates', response: '⚠️ In development', notes: 'Offline mode planned' },
+                { category: 'Payment Processing', requirement: 'PCI DSS compliance', response: '✅ Yes', notes: 'Secure payments' },
+                { category: 'Payment Processing', requirement: 'Online + POS payments', response: '✅ Yes', notes: 'POS + online supported' },
+                { category: 'Payment Processing', requirement: 'Daily cash reconciliation', response: '✅ Yes', notes: 'Native reporting' },
+                { category: 'Payment Processing', requirement: 'POS integration', response: '✅ Yes', notes: 'Product sales supported' },
+                { category: 'Payment Processing', requirement: 'Configurable payment by channel', response: '✅ Yes', notes: 'Supported' },
+                { category: 'Payment Processing', requirement: 'Split payments', response: '✅ Yes', notes: 'Native' },
+                { category: 'Payment Processing', requirement: 'Payment error handling/troubleshooting', response: '✅ Yes', notes: 'Support available' },
+                { category: 'Permissions & Security', requirement: 'Detailed roles & permissions', response: '✅ Yes', notes: 'Granular control' },
+                { category: 'Permissions & Security', requirement: 'Traceability for price/sensitive changes', response: '✅ Yes', notes: 'Logged with audit trails' },
+                { category: 'Permissions & Security', requirement: 'Data anonymization & retention', response: '⚠️ Limited', notes: 'Available on request' },
+                { category: 'Permissions & Security', requirement: 'SSO (SAML, OAuth) + MFA', response: '✅ Yes', notes: 'Supported' },
+                { category: 'Performance & Stability', requirement: 'Fast performance at peak times', response: '✅ Yes', notes: 'Built for high volumes' },
+                { category: 'Performance & Stability', requirement: 'Prevent overbooking/errors', response: '✅ Yes', notes: 'Inventory logic enforced' },
+                { category: 'Performance & Stability', requirement: 'Archive/delete obsolete products', response: '✅ Yes', notes: 'Supported' },
+                { category: 'Performance & Stability', requirement: 'Real-time ticket availability', response: '✅ Yes', notes: 'Native' },
+                { category: 'Product Combos, Pricing & Promotions', requirement: 'Manage combos (tours, meals, accom)', response: '✅ Yes', notes: 'Native support' },
+                { category: 'Product Combos, Pricing & Promotions', requirement: 'Agents create/sell combos', response: '✅ Yes', notes: 'Supported' },
+                { category: 'Product Combos, Pricing & Promotions', requirement: 'Seasonal tiered pricing & commissions', response: '✅ Yes', notes: 'Advanced pricing engine' },
+                { category: 'Product Combos, Pricing & Promotions', requirement: 'Future booking price calc updates', response: '✅ Yes', notes: 'Dynamic' },
+                { category: 'Product Combos, Pricing & Promotions', requirement: 'Support for rounding', response: '✅ Yes', notes: 'Configurable' },
+                { category: 'Product Combos, Pricing & Promotions', requirement: 'Pricing conflict alerts', response: '✅ Yes', notes: 'Alerts triggered' },
+                { category: 'Product Combos, Pricing & Promotions', requirement: 'Dynamic pricing', response: '✅ Yes', notes: 'Advanced compared to peers' },
+                { category: 'Product Combos, Pricing & Promotions', requirement: 'Native tax calculation', response: '✅ Yes', notes: 'Built-in' },
+                { category: 'Product Combos, Pricing & Promotions', requirement: 'Advanced promo tools', response: '✅ Yes', notes: 'Flexible promo codes, discounts' },
+                { category: 'Reporting & Analytics', requirement: 'Live dashboards', response: '✅ Yes', notes: 'Bookings, manifests, cancellations' },
+                { category: 'Reporting & Analytics', requirement: 'Customizable reports', response: '✅ Yes', notes: 'By agent, channel, location, pax' },
+                { category: 'Reporting & Analytics', requirement: 'Export & schedule reports', response: '✅ Yes', notes: 'Supported' },
+                { category: 'Reporting & Analytics', requirement: 'Demographics reporting', response: '✅ Yes', notes: 'If data collected' },
+                { category: 'Reporting & Analytics', requirement: 'Abandoned booking tracking', response: '❌ Not native', notes: '(Requires integration)' },
+                { category: 'Setup & Configuration', requirement: 'Simple product/pricing setup', response: '✅ Yes', notes: 'Streamlined back office' },
+                { category: 'Setup & Configuration', requirement: 'Efficient setup of promos/commissions', response: '✅ Yes', notes: 'Supported' },
+                { category: 'Setup & Configuration', requirement: 'Flexible variants (time, language, add-ons)', response: '✅ Yes', notes: 'Without duplication' },
+                { category: 'Setup & Configuration', requirement: 'Data validation', response: '✅ Yes', notes: 'Built-in checks' },
+                { category: 'Support & Vendor Relationship', requirement: 'Support logs & uptime tracking', response: '✅ Yes', notes: 'Tracked and reported' },
+                { category: 'Support & Vendor Relationship', requirement: 'Clear roadmap & SLAs', response: '✅ Yes', notes: 'Provided' },
+                { category: 'Support & Vendor Relationship', requirement: 'Training, docs, release planning', response: '✅ Yes', notes: 'Regular release notes' },
+                { category: 'Support & Vendor Relationship', requirement: '24/7 critical issue support', response: '✅ Yes', notes: 'SLA-backed' },
+                { category: 'User Experience (UX)', requirement: 'Clean, intuitive UI', response: '✅ Yes', notes: 'Across devices' },
+                { category: 'User Experience (UX)', requirement: 'Custom dashboards', response: '⚠️ Partial', notes: 'Filters and notes, drag-and-drop limited' },
+                { category: 'User Experience (UX)', requirement: 'Manage booking notes & ops', response: '✅ Yes', notes: 'Supported' },
+                { category: 'User Experience (UX)', requirement: 'Smooth end-to-end booking flow', response: '✅ Yes', notes: 'Guest + agent side' },
+                { category: 'User Experience (UX)', requirement: 'Quick search/lookup', response: '✅ Yes', notes: 'Supported' }
+            ];
+
+            // Function to render the RFP items
+            function renderRfpItems(searchTerm, filterValue) {
+                rfpListContainer.innerHTML = ''; // Clear existing content
+                const filteredData = rfpData.filter(item => {
+                    const matchesSearch = searchTerm === '' ||
+                                        item.requirement.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                        item.notes.toLowerCase().includes(searchTerm.toLowerCase());
+                    const matchesFilter = filterValue === 'all' || item.response === filterValue;
+                    return matchesSearch && matchesFilter;
+                });
+
+                if (filteredData.length === 0) {
+                    rfpListContainer.innerHTML = '<p class="text-center text-gray-500 text-lg py-12">No matching requirements found.</p>';
+                    return;
+                }
+
+                // Group items by category
+                const groupedData = filteredData.reduce((acc, item) => {
+                    (acc[item.category] = acc[item.category] || []).push(item);
+                    return acc;
+                }, {});
+
+                for (const category in groupedData) {
+                    // Category Heading
+                    const categoryHeader = document.createElement('div');
+                    categoryHeader.classList.add('py-4', 'mt-6', 'border-b', 'border-gray-700');
+                    categoryHeader.innerHTML = `<h3 class="text-xl font-bold text-gray-200">${category}</h3>`;
+                    rfpListContainer.appendChild(categoryHeader);
+
+                    // Items for this category
+                    groupedData[category].forEach(item => {
+                        const itemCard = document.createElement('div');
+                        itemCard.classList.add('bg-gray-800', 'bg-opacity-50', 'rounded-lg', 'p-6', 'shadow-lg', 'border', 'border-gray-700', 'hover:border-teal-500', 'hover:bg-opacity-70', 'transition-all', 'rfp-card');
+                        
+                        let responseColor;
+                        let responseText;
+
+                        // Set colors and text based on response
+                        switch (item.response) {
+                            case '✅ Yes':
+                                responseColor = 'text-green-400';
+                                responseText = 'Yes';
+                                break;
+                            case '❌ Not native':
+                                responseColor = 'text-red-400';
+                                responseText = 'Not Native';
+                                break;
+                            case '⚠️ Partial':
+                                responseColor = 'text-yellow-400';
+                                responseText = 'Partial';
+                                break;
+                            case '⚠️ Limited':
+                                responseColor = 'text-orange-400';
+                                responseText = 'Limited';
+                                break;
+                            case '⚠️ In development':
+                                responseColor = 'text-blue-400';
+                                responseText = 'In Development';
+                                break;
+                            default:
+                                responseColor = 'text-gray-400';
+                                responseText = item.response;
+                        }
+
+                        itemCard.innerHTML = `
+                            <div class="flex items-start justify-between mb-4">
+                                <p class="text-lg font-semibold text-white">${item.requirement}</p>
+                                <span class="text-sm font-semibold ${responseColor} whitespace-nowrap ml-4">${item.response}</span>
+                            </div>
+                            <p class="text-gray-400 text-sm italic">${item.notes}</p>
+                        `;
+                        rfpListContainer.appendChild(itemCard);
+                    });
+                }
+            }
+
+            // Event listeners for search and filter on RFP tab
+            rfpSearchInput.addEventListener('input', () => {
+                renderRfpItems(rfpSearchInput.value, rfpFilterSelect.value);
+            });
+            
+            rfpFilterSelect.addEventListener('change', () => {
+                renderRfpItems(rfpSearchInput.value, rfpFilterSelect.value);
+            });
+
+            // Initial render of RFP items
+            if (document.getElementById('rfp-response-content').classList.contains('active')) {
+                renderRfpItems('', 'all');
+            }
+
+
+            // ARCHITECTURE TAB - CONTENT FILTERING LOGIC
+            const contentSections = document.querySelectorAll('#architecture-content .content-section');
+            const filterButtons = document.querySelectorAll('.category-filter-btn');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    const category = button.dataset.category;
+
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    contentSections.forEach(section => {
+                        if (category === 'all' || section.id === category) {
+                            section.style.display = 'block';
+                        } else {
+                            section.style.display = 'none';
+                        }
+                    });
+                });
+            });
+
+            // Static AI Insight button logic
+            const insightButtons = document.querySelectorAll('[data-insight-id]');
+            insightButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const insightId = button.dataset.insightId;
+                    const insightData = staticInsights[insightId];
+                    if (insightData) {
+                        showInsightModal(insightData.title, insightData.text);
+                    }
+                });
+            });
+            
+            const closeButton = insightsModal.querySelector('.close-button');
+            if (closeButton) {
+                closeButton.addEventListener('click', hideInsightModal);
+            }
+
+        });
+    </script>
+</body>
+</html>
