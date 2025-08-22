@@ -194,6 +194,99 @@
             transform: translateY(-2px);
             border-color: var(--accent-teal);
         }
+        /* Styles from code 1 */
+        .data-card, .integration-card, .rfp-card {
+            background: #1f2937;
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            transition: transform 0.3s ease, border-color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .data-card:hover, .integration-card:hover, .rfp-card:hover {
+            transform: translateY(-5px);
+            border-color: #14B8A6;
+        }
+        
+        .animated-bar {
+            height: 10px;
+            width: 0%;
+            background: linear-gradient(90deg, #14B8A6, #60a5fa);
+            border-radius: 9999px;
+            animation: fill-bar 1.5s ease-out forwards;
+        }
+
+        @keyframes fill-bar {
+            from { width: 0%; }
+        }
+        
+        .circular-chart {
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            position: relative;
+        }
+        .circular-chart .circle-bg {
+            fill: none;
+            stroke: #2d3748;
+            stroke-width: 8;
+        }
+        .circular-chart .circle-progress {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            animation: progress-fill 1.5s ease-out forwards;
+        }
+        @keyframes progress-fill {
+            from { stroke-dasharray: 0 100; }
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0.5rem;
+            width: 10px;
+            height: 10px;
+            background-color: #14B8A6;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+        .timeline-connector {
+            position: absolute;
+            left: 4px;
+            top: 1rem;
+            height: calc(100% - 1rem);
+            width: 2px;
+            background-color: #334155;
+        }
+
+        .integration-preview-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            border: 1px solid #334155;
+        }
+
+        .marketplace-card {
+            background: linear-gradient(45deg, #14B8A6, #3b82f6);
+            color: #fff;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .marketplace-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(20, 184, 166, 0.4);
+        }
 
         .content-section {
             display: none;
@@ -201,7 +294,6 @@
         .content-section.active {
             display: block;
         }
-
         .category-filter-btn {
             transition: all 0.3s ease;
             background-color: #334155;
@@ -210,7 +302,6 @@
             background-color: var(--accent-teal);
             color: #fff;
         }
-
         .impact-tile {
             background-color: #1f2937;
             border: 1px solid #3b82f6;
@@ -228,7 +319,6 @@
             color: #60a5fa;
             border-bottom: 2px solid var(--accent-teal);
         }
-
         .client-card, .content-card, .social-post-card {
             background-color: #1f2937;
             border: 1px solid #334155;
@@ -317,7 +407,12 @@
             <nav class="mb-8">
                 <ul class="flex flex-col sm:flex-row justify-between lg:justify-center text-sm font-medium text-center space-y-2 sm:space-y-0 sm:space-x-2 lg:space-x-4">
                     <li class="w-full sm:w-auto">
-                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out active" data-tab="rfp-response">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out" data-tab="our-proposal">
+                            Our Proposal
+                        </a>
+                    </li>
+                    <li class="w-full sm:w-auto">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out" data-tab="rfp-response">
                             RFP Response
                         </a>
                     </li>
@@ -327,7 +422,7 @@
                         </a>
                     </li>
                     <li class="w-full sm:w-auto">
-                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out" data-tab="pricing">
+                        <a href="#" class="tab-button inline-flex items-center justify-center p-4 rounded-t-lg transition duration-300 ease-in-out active" data-tab="pricing">
                             Pricing
                         </a>
                     </li>
@@ -346,8 +441,218 @@
 
             <!-- Tab Content -->
             <div id="tab-content-container">
+                <!-- Our Proposal Tab Content (from code 1) -->
+                <div id="our-proposal-content" class="tab-content">
+                    <div class="space-y-16">
+                        <!-- Introduction Section -->
+                        <section>
+                            <h2 class="text-3xl font-bold text-teal-400 mb-4 text-center">Why Zaui is the Right Partner for Waitomo</h2>
+                            <p class="text-gray-300 mb-4">
+                                thl Waitomo is one of New Zealand’s most iconic tourism brands, offering unforgettable cave experiences, guided tours, adventure rafting, and cultural journeys. Your commitment to guest excellence, environmental stewardship, and operational complexity calls for a platform that is flexible, scalable, and deeply experienced in supporting multi-product, nature-based tourism.
+                            </p>
+                            <p class="text-gray-300 mb-4">
+                                Zaui was designed specifically for operators like yours. With more than 20 years of experience supporting leading tour, attraction, and transportation operators around the world, we understand what it takes to manage high volumes, seasonal spikes, complex schedules, and distributed teams. Our platform powers companies that run water-based activities, boats, harbor cruises, rafting tours, and shuttle-based transfers.
+                            </p>
+                            <p class="text-gray-300">
+                                We recognize that your success depends on more than just software. You need a strategic partner who understands your business and actively contributes to your growth.
+                            </p>
+                        </section>
+
+                        <hr class="border-gray-700">
+
+                        <!-- Company Profile & Stability Section -->
+                        <section>
+                            <h2 class="text-3xl font-bold text-teal-400 mb-8 text-center">Company Profile & Stability</h2>
+                            <div class="grid md:grid-cols-2 gap-8">
+                                <div class="bg-gray-800 rounded-lg p-6 space-y-4 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white text-center">Company Overview</h3>
+                                    <p class="text-gray-400 text-sm">
+                                        Zaui is a leading SaaS reservation and operations management system with over 20 years in market. Headquartered in Vancouver, Canada, Zaui serves operators across North America, Europe, Asia-Pacific, and New Zealand.
+                                    </p>
+                                    <p class="text-gray-400 text-sm">
+                                        Our customers include major transportation providers, multi-park attractions, and water-based adventure companies. In New Zealand and Australia, Zaui has supported operators in rafting, jet boat, and multi-attraction sectors. Internationally, we work with high-profile brands such as heritage railways, heli-skiing operators, and large-scale shuttle companies.
+                                    </p>
+                                    <ul class="list-disc list-inside space-y-1 text-gray-400 text-sm">
+                                        <li><strong>Founded:</strong> 1999</li>
+                                        <li><strong>Headquarters:</strong> Vancouver, Canada</li>
+                                        <li><strong>Regions Supported:</strong> North America, Europe, Asia-Pacific</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-gray-800 rounded-lg p-6 space-y-4 shadow-md flex flex-col justify-between">
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-white mb-2 text-center">Stability & Support</h3>
+                                        <p class="text-gray-400 text-sm">
+                                            <strong>Uptime:</strong> 99.9% availability over the past 5 years, supported by redundant AWS cloud infrastructure.
+                                        </p>
+                                        <p class="text-gray-400 text-sm mt-2">
+                                            <strong>Incident Reporting:</strong> Transparent SLA-backed status portal, real-time updates, and post-incident reports.
+                                        </p>
+                                        <p class="text-gray-400 text-sm mt-2">
+                                            <strong>Size and Location:</strong> 30+ staff across Canada, the US, and remote teams globally. 24/7 monitoring, follow-the-sun support.
+                                        </p>
+                                    </div>
+                                    <div class="mt-4">
+                                        <h4 class="font-semibold text-white mb-1 text-center">Local Support & References</h4>
+                                        <p class="text-gray-400 text-sm">
+                                            We maintain strong partnerships with operators in Australasia and can provide NZ-based references. Regional timezone-aligned support is available.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        
+                        <hr class="border-gray-700">
+                        
+                        <!-- Apps & Integrations Section -->
+                        <section>
+                            <h2 class="text-3xl font-bold text-teal-400 mb-8 text-center">Apps & Integrations</h2>
+                            <p class="text-gray-300 mb-6 text-center">
+                                Zaui seamlessly integrates with over 80 different apps and partners to create a powerful, unified platform for your business. Our open API architecture allows you to connect the tools you already use.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div class="integration-card p-6 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white mb-2 text-center">Google Things to Do</h3>
+                                    <p class="text-gray-400 text-sm">
+                                        Increase your reach and sell tickets directly on Google Search and Maps. Zaui provides real-time availability sync to drive direct bookings.
+                                        <a href="https://support.google.com/google-ads/answer/10723429?hl=en" target="_blank" class="text-teal-400 hover:text-teal-300 font-medium ml-2 underline">Learn More &rarr;</a>
+                                    </p>
+                                </div>
+                                <div class="integration-card p-6 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white mb-2 text-center">Fotaflo</h3>
+                                    <p class="text-gray-400 text-sm">
+                                        Automatically link tour bookings to photos, enhancing the guest experience and providing a new revenue stream through photo sales.
+                                        <a href="https://www.fotaflo.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-medium ml-2 underline">Visit Website &rarr;</a>
+                                    </p>
+                                </div>
+                                <div class="integration-card p-6 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white mb-2 text-center">RezRecover</h3>
+                                    <p class="text-gray-400 text-sm">
+                                        Recover lost revenue from abandoned carts with automated, personalized email campaigns designed to bring customers back to complete their booking.
+                                        <a href="https://www.cartstack.com/?afmc=dw&gad_campaignid=21011664637" target="_blank" class="text-teal-400 hover:text-teal-300 font-medium ml-2 underline">Visit Website &rarr;</a>
+                                    </p>
+                                </div>
+                                <div class="integration-card p-6 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white mb-2 text-center">TOMIS</h3>
+                                    <p class="text-gray-400 text-sm">
+                                        A comprehensive marketing platform for tour operators that leverages Zaui data to optimize digital ad spend and increase conversions.
+                                        <a href="https://tomis.tech/" target="_blank" class="text-teal-400 hover:text-teal-300 font-medium ml-2 underline">Visit Website &rarr;</a>
+                                    </p>
+                                </div>
+                                <div class="integration-card p-6 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white mb-2 text-center">Copernican</h3>
+                                    <p class="text-gray-400 text-sm">
+                                        A data-driven revenue management tool that analyzes your bookings to provide smart pricing recommendations.
+                                        <a href="https://www.getcopernican.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-medium ml-2 underline">Visit Website &rarr;</a>
+                                    </p>
+                                </div>
+                                <div class="integration-card p-6 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white mb-2 text-center">Yonder</h3>
+                                    <p class="text-gray-400 text-sm">
+                                        An automated AI assistant that handles guest queries 24/7, freeing up your staff and ensuring timely responses.
+                                        <a href="https://www.yonderhq.com/post/unleash-automation-by-connecting-the-zaui-booking-system" target="_blank" class="text-teal-400 hover:text-teal-300 font-medium ml-2 underline">Learn More &rarr;</a>
+                                    </p>
+                                </div>
+                                <a href="https://marketplace.zaui.com/" target="_blank" class="marketplace-card col-span-1 md:col-span-2 lg:col-span-3 flex items-center justify-center p-8">
+                                    <div class="text-center">
+                                        <h3 class="text-3xl md:text-4xl font-extrabold mb-2">80+ Others</h3>
+                                        <p class="text-lg md:text-xl font-medium">Explore the full Zaui Marketplace &rarr;</p>
+                                    </div>
+                                </a>
+                            </div>
+                        </section>
+                        
+                        <hr class="border-gray-700">
+
+                        <!-- Implementation Approach Section -->
+                        <section>
+                            <h2 class="text-3xl font-bold text-teal-400 mb-8 text-center">Implementation Approach</h2>
+                            <div class="relative flex flex-col md:flex-row gap-8">
+                                <div class="flex-1 space-y-6">
+                                    <div class="timeline-item">
+                                        <div class="timeline-connector"></div>
+                                        <h3 class="text-xl font-semibold text-white text-center">Timeline (12–16 weeks)</h3>
+                                        <ul class="list-disc list-inside ml-6 text-gray-400 text-sm mt-2">
+                                            <li>Discovery & Demo</li>
+                                            <li>Sandbox & Configuration</li>
+                                            <li>Training & Migration</li>
+                                            <li>Pilot & Go-Live</li>
+                                            <li>Support Ramp-Up</li>
+                                        </ul>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <h3 class="text-xl font-semibold text-white text-center">Change Management</h3>
+                                        <ul class="list-disc list-inside ml-6 text-gray-400 text-sm mt-2">
+                                            <li>Dedicated implementation manager</li>
+                                            <li>Connections to OTAs, payment gateways, resellers, etc.</li>
+                                            <li>Weekly steering calls during rollout</li>
+                                            <li>Documentation and playbooks</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="flex-1 space-y-6">
+                                    <div class="timeline-item">
+                                        <div class="timeline-connector"></div>
+                                        <h3 class="text-xl font-semibold text-white text-center">Data Migration</h3>
+                                        <ul class="list-disc list-inside ml-6 text-gray-400 text-sm mt-2">
+                                            <li>Import of historic guest, booking, and product data</li>
+                                            <li>Validation checks and parallel testing</li>
+                                        </ul>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <h3 class="text-xl font-semibold text-white text-center">Release Management</h3>
+                                        <ul class="list-disc list-inside ml-6 text-gray-400 text-sm mt-2">
+                                            <li>Bi-weekly minor releases, quarterly major feature releases</li>
+                                            <li>Transparent changelog and in-app release notifications</li>
+                                        </ul>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <h3 class="text-xl font-semibold text-white text-center">User Training</h3>
+                                        <ul class="list-disc list-inside ml-6 text-gray-400 text-sm mt-2">
+                                            <li>E-learning modules</li>
+                                            <li>Live workshops (onsite if possible)</li>
+                                            <li>Post-launch resources and Help Center</li>
+                                        </ul>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <h3 class="text-xl font-semibold text-white text-center">Roadmap (Next 18 months)</h3>
+                                        <ul class="list-disc list-inside ml-6 text-gray-400 text-sm mt-2">
+                                            <li>Nera AI Copilot (pricing optimization, demand forecasting, guest communication)</li>
+                                            <li>Advanced reseller management and OTA connectivity</li>
+                                            <li>Expanded payment fraud tools</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <hr class="border-gray-700">
+
+                        <!-- Client References Section (from code 1) -->
+                        <section>
+                            <h2 class="text-3xl font-bold text-teal-400 mb-8 text-center">References</h2>
+                            <p class="text-gray-300 mb-6 text-center">
+                                We can provide direct contact details for these clients under NDA.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                <div class="bg-gray-800 rounded-lg p-6 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white text-center">Stray New Zealand</h3>
+                                    <a href="https://www.straytravel.com/" target="_blank" class="text-teal-400 hover:text-teal-300 font-medium text-sm mt-2 text-center">Visit Website &rarr;</a>
+                                </div>
+                                <div class="bg-gray-800 rounded-lg p-6 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white text-center">Ziptrek New Zealand</h3>
+                                    <a href="https://www.ziptrek.co.nz/" target="_blank" class="text-teal-400 hover:text-teal-300 font-medium text-sm mt-2 text-center">Visit Website &rarr;</a>
+                                </div>
+                                <div class="bg-gray-800 rounded-lg p-6 shadow-md">
+                                    <h3 class="text-xl font-semibold text-white text-center">Banff Adventures (Canada)</h3>
+                                    <a href="https://www.banffadventures.com/?gad_campaignid=22427120867" target="_blank" class="text-teal-400 hover:text-teal-300 font-medium text-sm mt-2 text-center">Visit Website &rarr;</a>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+
                 <!-- RFP Response Tab Content -->
-                <div id="rfp-response-content" class="tab-content active">
+                <div id="rfp-response-content" class="tab-content">
                     <div class="text-center mb-8">
                         <h2 class="text-3xl font-extrabold text-teal-400 mb-1">thl Waitomo RFP Response</h2>
                         <p class="text-xl text-gray-400">Vendor: Zaui Software Ltd.</p>
@@ -611,6 +916,58 @@
                     </main>
                 </div>
 
+                <!-- RFP Response Tab Content -->
+                <div id="rfp-response-content" class="tab-content">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-extrabold text-teal-400 mb-1">thl Waitomo RFP Response</h2>
+                        <p class="text-xl text-gray-400">Vendor: Zaui Software Ltd.</p>
+                    </div>
+
+                    <!-- Search and Filter Controls -->
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 mb-8">
+                        <input type="text" id="rfp-search" placeholder="Search requirements..." class="flex-1 p-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-500 transition-colors">
+                        <select id="rfp-filter" class="p-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-teal-500 transition-colors">
+                            <option value="all">All Responses</option>
+                            <option value="✅ Yes">✅ Yes</option>
+                            <option value="❌ Not native">❌ Not native</option>
+                            <option value="⚠️ Partial">⚠️ Partial</option>
+                            <option value="⚠️ Limited">⚠️ Limited</option>
+                            <option value="⚠️ In development">⚠️ In development</option>
+                        </select>
+                    </div>
+
+                    <!-- RFP Requirements List -->
+                    <div id="rfp-list" class="space-y-6">
+                        <!-- Content will be dynamically populated by JavaScript -->
+                    </div>
+
+                    <!-- Bottom Narrative Sections -->
+                    <div class="mt-12 space-y-8">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">Innovation & AI</h3>
+                            <p class="text-gray-300">
+                                Zaui is investing heavily in AI under Nera AI, our intelligent copilot. Nera enhances pricing logic, capacity optimization, guest communications, and operational insights. She acts as a strategic partner for operators, helping maximize revenue and streamline workflows.
+                            </p>
+                            <ul class="list-disc list-inside space-y-1 text-gray-400 mt-4">
+                                <li><strong>Dynamic Pricing:</strong> Automated adjustments based on demand and capacity.</li>
+                                <li><strong>Guest Communication:</strong> Personalized, automated confirmations and reminders.</li>
+                                <li><strong>Operational Optimization:</strong> Capacity balancing and inventory allocation.</li>
+                                <li><strong>Data Insights:</strong> Surfacing trends and recommendations for decision-making.</li>
+                            </ul>
+                            <p class="text-gray-300 mt-4">Future roadmap includes expansion into fraud detection and advanced marketing automation.</p>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold mb-4">Company Stability & Support</h3>
+                            <p class="text-gray-300">
+                                Zaui has been in market for over 20 years, serving leading transportation, tour, and attraction operators worldwide. Headquartered in Vancouver, Canada, Zaui supports clients across North America, Europe, and Asia-Pacific.
+                                <br><br>
+                                We maintain a track record of 99.9% uptime, with incident reporting and full SLA commitments. While we do not have a physical office in New Zealand, we provide international support coverage and can share references from regional clients with similar scale and complexity.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+
                 <!-- Client References Tab Content -->
                 <div id="references-content" class="tab-content">
                     <div class="text-center mb-8">
@@ -686,11 +1043,130 @@
                 </div>
 
                 <!-- Pricing Tab Content -->
-                <div id="pricing-content" class="tab-content">
-                    <h2 class="text-2xl md:text-3xl font-bold mb-4 text-gray-200">Pricing Summary</h2>
-                    <p class="text-gray-400 text-lg">
-                        [Placeholder] This section will detail a flexible and scalable pricing model tailored to your business. Our goal is to demonstrate a clear return on investment (ROI) by boosting direct bookings, reducing operational costs, and increasing revenue through efficient upsells and cross-sells. Let's discuss a plan that works for you.
-                    </p>
+                <div id="pricing-content" class="tab-content active">
+                    <div class="text-center mb-12">
+                        <h2 class="text-3xl font-extrabold text-teal-400 mb-4">Zaui Pricing Proposal</h2>
+                        <p class="text-gray-300 max-w-4xl mx-auto">
+                            At Zaui, we are highly flexible and willing to work with your budget to create a structure that works best for your business. We recognize that Waitomo operates across multiple lines of business, with different distribution channels, so our goal is to align pricing with both your operational model and your growth targets.
+                        </p>
+                    </div>
+
+                    <!-- Pricing Options Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <!-- Option 1 Card -->
+                        <div class="bg-gray-800 rounded-xl p-8 shadow-xl border border-gray-700 transition-all duration-300 hover:border-teal-500">
+                            <h3 class="text-2xl font-bold text-teal-400 mb-2">Option 1</h3>
+                            <h4 class="text-xl font-semibold text-white mb-4">Consumer-Funded (4% B2C Fee)</h4>
+                            <div class="space-y-4 text-gray-300 text-sm">
+                                <p><strong>Fee:</strong> 4% charged only to your customers on the front end.</p>
+                                <p><strong>Condition:</strong> You must transact 30% or more through your website (direct channel).</p>
+                                <ul class="list-disc list-inside ml-4 space-y-1">
+                                    <li>If Under 30%: A fee is applied on OTA and backend bookings as well.</li>
+                                    <li>If Over 30%: OTA and backend bookings are free of charge.</li>
+                                </ul>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-400">
+                                <strong class="text-white">Best for:</strong> Operators with a strong direct channel strategy who want costs shifted entirely to the end consumer.
+                            </p>
+                        </div>
+
+                        <!-- Option 2 Card -->
+                        <div class="bg-gray-800 rounded-xl p-8 shadow-xl border-2 border-teal-500 relative transition-all duration-300 hover:scale-105">
+                             <div class="absolute -top-4 right-4 bg-teal-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">Most Popular</div>
+                            <h3 class="text-2xl font-bold text-teal-400 mb-2">Option 2</h3>
+                            <h4 class="text-xl font-semibold text-white mb-4">Variable-Only Model (0.99%)</h4>
+                            <div class="space-y-4 text-gray-300 text-sm">
+                                <p><strong>Fee:</strong> 0.99% variable fee applied to all bookings (front-end, OTA, and backend).</p>
+                                <p><strong>Revenue Generator:</strong> Includes access to our fee-based revenue generator, enabling you to add a modest front-end service fee to offset system costs.</p>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-400">
+                                <strong class="text-white">Best for:</strong> Operators wanting predictable alignment between system cost and business volume, with flexibility to recapture costs via service fees.
+                            </p>
+                        </div>
+
+                        <!-- Option 3 Card -->
+                        <div class="bg-gray-800 rounded-xl p-8 shadow-xl border border-gray-700 transition-all duration-300 hover:border-teal-500">
+                            <h3 class="text-2xl font-bold text-teal-400 mb-2">Option 3</h3>
+                            <h4 class="text-xl font-semibold text-white mb-4">Hybrid Enterprise Model ($4,000/month + 0.6%)</h4>
+                            <div class="space-y-4 text-gray-300 text-sm">
+                                <p><strong>Fee:</strong> $4,000 monthly flat fee + 0.6% variable fee applied to all bookings.</p>
+                                <p><strong>Revenue Generator:</strong> Includes access to our fee-based revenue generator, enabling you to add a modest front-end service fee to offset system costs.</p>
+                            </div>
+                            <p class="mt-6 text-sm text-gray-400">
+                                <strong class="text-white">Best for:</strong> Operators with high annual booking volume who want lower per-transaction costs, predictable base fees, and maximum long-term scalability.
+                            </p>
+                        </div>
+                    </div>
+
+                    <hr class="border-gray-700 my-12">
+
+                    <!-- Comparison Table -->
+                    <div class="overflow-x-auto">
+                        <h3 class="text-2xl font-bold text-teal-400 mb-6 text-center">Pricing Options at a Glance</h3>
+                        <table class="min-w-full divide-y divide-gray-700 rounded-lg overflow-hidden">
+                            <thead class="bg-gray-800">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Feature</th>
+                                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Option 1</th>
+                                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Option 2</th>
+                                    <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-400 uppercase tracking-wider">Option 3</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-gray-900 divide-y divide-gray-800">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Monthly Base Fee</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-300">None</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-300">None</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-white font-semibold">$4,000</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Variable Transaction Fee</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-300">4% (B2C only)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-white font-semibold">0.99% (all bookings)</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-300">0.6% (all bookings)</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Minimum Direct Channel %</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-white font-semibold">30% for full benefits</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-300">No minimum</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-300">No minimum</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Revenue Generator</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-300">No</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-white font-semibold">Yes</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-white font-semibold">Yes</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">Best For</td>
+                                    <td class="px-6 py-4 text-sm text-center text-gray-300">Strong direct channel</td>
+                                    <td class="px-6 py-4 text-sm text-center text-white font-semibold">Predictable volume-based cost</td>
+                                    <td class="px-6 py-4 text-sm text-center text-gray-300">High volume, lowest transaction cost</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr class="border-gray-700 my-12">
+
+                    <!-- Additional Costs Section -->
+                    <div class="max-w-4xl mx-auto">
+                        <h3 class="text-2xl font-bold text-teal-400 mb-4 text-center">Additional Costs (Applicable Across All Options)</h3>
+                        <ul class="list-disc list-inside space-y-2 text-gray-300 text-lg">
+                            <li class="flex items-start">
+                                <span class="mr-2 text-teal-400">&#x2022;</span>
+                                <div>
+                                    <strong>Setup & Onboarding Fee:</strong> $2,000 one-time, covering comprehensive configuration, training, and data migration.
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="mr-2 text-teal-400">&#x2022;</span>
+                                <div>
+                                    <strong>Payment Gateway Fee:</strong> 0.25% for any custom payment gateway outside of Stripe or Moneris.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
 
                 <!-- Team Tab Content -->
@@ -843,7 +1319,7 @@
                 },
                 'case-study-1': {
                     title: 'AI Insight for thl Waitomo: Scaling Tour Operations',
-                    text: 'This case study demonstrates Zaui’s ability to help tour operators scale their business. For thl Waitomo, this means our platform can efficiently manage the high-volume traffic of all your caves (Glowworm, Ruakuri, Aranui) and a wider variety of tours. The system centralizes all operations, ensuring you can grow your bookings without overwhelming your staff.'
+                    text: 'This case study demonstrates Zaui’s ability to help tour operators scale their business. For thl Waitomo, this means our platform can efficiently manage the high-volume traffic of all your caves (Glowworm, Ruakuri, and Aranui) and a wider variety of tours. The system centralizes all operations, ensuring you can grow your bookings without overwhelming your staff.'
                 },
                 'case-study-2': {
                     title: 'AI Insight for thl Waitomo: Dynamic Pricing for Tours',
@@ -946,8 +1422,8 @@
                 });
             });
 
-            // Ensure the RFP Response tab is active on page load
-            const initialTab = document.querySelector('.tab-button[data-tab="rfp-response"]');
+            // Set the Pricing tab as the active one by default
+            const initialTab = document.querySelector('.tab-button[data-tab="pricing"]');
             if (initialTab) {
                 switchTab(initialTab);
             }
@@ -1050,8 +1526,8 @@
                 rfpListContainer.innerHTML = ''; // Clear existing content
                 const filteredData = rfpData.filter(item => {
                     const matchesSearch = searchTerm === '' ||
-                                        item.requirement.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                                        item.notes.toLowerCase().includes(searchTerm.toLowerCase());
+                                            item.requirement.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                            item.notes.toLowerCase().includes(searchTerm.toLowerCase());
                     const matchesFilter = filterValue === 'all' || item.response === filterValue;
                     return matchesSearch && matchesFilter;
                 });
